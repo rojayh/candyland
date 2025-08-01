@@ -1,58 +1,110 @@
+from random import shuffle
+
 import player
 import board
 import cards
 
+def reset(players: list[player], card_deck: cards):
+    for player in players:
+        player.space = 0
+    card_deck.shuffle_deck()
+
 if __name__ == '__main__':
-    zack = player.Player("Zack", 28.8)
-    joe = player.Player("Joe ", 28.5)
-    ethan = player.Player("Ethan", 27)
-    elise = player.Player("Elise", 28.1)
+    zack = player.Player("Zack")
+    joe = player.Player("Joe")
+    ethan = player.Player("Ethan")
+    elise = player.Player("Elise")
+    jim = player.Player("Jim")
+    ariel = player.Player("Ariel")
+    rachel = player.Player("Rachel")
+    greg = player.Player("Greg")
+    markus = player.Player("Markus")
+    baxter = player.Player("Baxter")
+    alexis = player.Player("Alexis")
+    krystof = player.Player("Krystof")
+
     board = board.Board()
     deck = cards.Card()
 
-    players = [zack, joe, ethan, elise]
+    players = [zack, joe, ethan, elise, jim, ariel, rachel, greg, markus, baxter, alexis, krystof]
     # technically the youngest player goes first but I'd rather make it a random turn order
     # but actually its just going to be whatever order I made the players list in lol
 
     error = 0
     win = 0
+    turn_counter = 0
+    game_number = 0
+    num_turns = []
 
-    while error == 0 and win == 0:
-        for player in players:
-            # check if their previous space was on a licorice spot
-            if player.skip_turn == 1:
-                print(f'{player.name} was skipped!')
-                player.skip_turn = 0
-                continue
+    while game_number < 100000:
+        print('game number: ' + str(game_number))
 
-            # draw a card
-            if deck.num_cards() > 0:
-                card = deck.draw()
-            else:
-                deck.shuffle_deck()
-                card = deck.draw()
-            # print("number of cards in deck: " + str(deck.num_cards()))
+        reset(players, deck)
 
-            # get the new position
-            new_pos = board.move(player.space, card)
+        # to prevent biasing towards players that start first, the player order is shuffled each game
+        shuffle(players)
 
-            # check for errors in board moving
-            if new_pos == -1:
-                error = -1
-                print("UH OH - error in board.move() :(")
-                break
+        win = 0
+        turn_counter = 0
 
-            # check if player won
-            if new_pos == 134:
-                win = 1
-                print(player.name + " won!")
-                break
+        while error == 0 and win == 0:
+            for player in players:
+                # check if their previous space was on a licorice spot
+                if player.skip_turn == 1:
+                    # print(f'turn {turn_counter}:\t{player.name} was skipped!')
+                    player.skip_turn = 0
+                    continue
 
-            # check if position is on licorice
-            if new_pos in board.licorice:
-                player.skip_turn = 1
+                # draw a card
+                if deck.num_cards() > 0:
+                    card = deck.draw()
+                else:
+                    deck.shuffle_deck()
+                    card = deck.draw()
+                # print("number of cards in deck: " + str(deck.num_cards()))
 
-            player.update_space(new_pos)
+                # get the new position
+                new_pos = board.move(player.space, card)
 
-            print(f'{player.name} moved to {new_pos}')
+                # check for errors in board moving
+                if new_pos == -1:
+                    error = -1
+                    print("UH OH - error in board.move() :(")
+                    break
 
+                # check if player won
+                if new_pos == 134:
+                    win = 1
+                    print(f'turn {turn_counter}:\t{player.name} won!')
+                    player.log_win()
+                    num_turns.append(turn_counter)
+                    break
+
+                # check if position is on licorice
+                if new_pos in board.licorice:
+                    player.skip_turn = 1
+
+                # this could be commented out
+                '''
+                if card[0] == 'd':
+                    context = f'drew double {card[1:]}! They moved from {player.space} to {new_pos}!'
+                else:
+                    context = f'drew {card}! They moved from {player.space} to {new_pos}!'
+                '''
+
+                player.update_space(new_pos)
+
+                # print(f'turn {turn_counter}:\t{player.name} {context}')
+
+            turn_counter += 1
+        game_number += 1
+
+    print('number of games played: ' + str(game_number))
+
+    players.sort(key=lambda player: player.num_wins, reverse=True)
+    rank = 1
+
+    for player in players:
+        print(f'rank {rank}: {player.name} - {player.num_wins} wins')
+        rank += 1
+    print('average number of turns: ' + str(sum(num_turns) / len(num_turns)))

@@ -39,31 +39,50 @@ class Board:
                 pos = lowest_result(current_pos, self.purple)
             case "dred":
                 temp = lowest_result(current_pos, self.red)
-                pos = lowest_result(temp, self.red)
+                if temp == 134:
+                    pos = temp
+                else:
+                    pos = lowest_result(temp, self.red)
+
             case "doran":
                 temp = lowest_result(current_pos, self.orange)
-                pos = lowest_result(temp, self.orange)
+                if temp == 134:
+                    pos = temp
+                else:
+                    pos = lowest_result(temp, self.orange)
             case "dyell":
                 temp = lowest_result(current_pos, self.yellow)
-                pos = lowest_result(temp, self.yellow)
+                if temp == 134:
+                    pos = temp
+                else:
+                    pos = lowest_result(temp, self.yellow)
             case "dgree":
                 temp = lowest_result(current_pos, self.green)
-                pos = lowest_result(temp, self.green)
+                if temp == 134:
+                    pos = temp
+                else:
+                    pos = lowest_result(temp, self.green)
             case "dblue":
                 temp = lowest_result(current_pos, self.blue)
-                pos = lowest_result(temp, self.blue)
+                if temp == 134:
+                    pos = temp
+                else:
+                    pos = lowest_result(temp, self.blue)
             case "dpurp":
                 temp = lowest_result(current_pos, self.purple)
-                pos = lowest_result(temp, self.purple)
-            case "pep":
+                if temp == 134:
+                    pos = temp
+                else:
+                    pos = lowest_result(temp, self.purple)
+            case "peppermint":
                 pos = self.peppermint
-            case "gum":
+            case "gumdrop":
                 pos = self.gumdrop
-            case "pea":
+            case "peanut":
                 pos = self.peanut
-            case "lol":
+            case "lollipop":
                 pos = self.lollipop
-            case "sno":
+            case "snowflake":
                 pos = self.snowflake
             case "plum":
                 pos = self.plum

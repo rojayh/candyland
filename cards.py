@@ -12,11 +12,11 @@ dyell = ["dyell"] * 2
 dgree = ["dgree"] * 2
 dblue = ["dblue"] * 2
 dpurp = ["dpurp"] * 2
-pep = ["pep"]
-gum = ["gum"]
-pea = ["pea"]
-lol = ["lol"]
-sno = ["sno"]
+pep = ["peppermint"]
+gum = ["gumdrop"]
+pea = ["peanut"]
+lol = ["lollipop"]
+sno = ["snowflake"]
 plum = ["plum"]
 
 class Card:

@@ -4,11 +4,13 @@ class Player:
     @param name: player name
     @param age: player age
     """
-    def __init__(self, name, age):
+    def __init__(self, name):
         self.name = name
-        self.age = age
+        #self.age = age
         self.space = 0
         self.skip_turn = 0
+        self.num_wins = 0
+
 
     def __str__(self):
         return str(self.name) + "\tage: " + str(self.age) + "\tpos: " + str(self.space) + "\tskip?: " + str(self.skip_turn)
@@ -18,3 +20,6 @@ class Player:
 
     def slip_turn(self):
         self.skip_turn = 1
+
+    def log_win(self):
+        self.num_wins += 1
