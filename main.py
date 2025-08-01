@@ -35,9 +35,10 @@ if __name__ == '__main__':
     turn_counter = 0
     game_number = 0
     num_turns = []
+    total_games = 100000
 
-    while game_number < 100000:
-        print('game number: ' + str(game_number))
+    while game_number < total_games:
+        # print('game number: ' + str(game_number))
 
         reset(players, deck)
 
@@ -75,7 +76,7 @@ if __name__ == '__main__':
                 # check if player won
                 if new_pos == 134:
                     win = 1
-                    print(f'turn {turn_counter}:\t{player.name} won!')
+                    # print(f'turn {turn_counter}:\t{player.name} won!')
                     player.log_win()
                     num_turns.append(turn_counter)
                     break
@@ -104,7 +105,16 @@ if __name__ == '__main__':
     players.sort(key=lambda player: player.num_wins, reverse=True)
     rank = 1
 
+    stdev_list = []
     for player in players:
-        print(f'rank {rank}: {player.name} - {player.num_wins} wins')
+        stdev_list.append( (player.num_wins - total_games/len(players))**2 )
+
+    stdev = (sum(stdev_list) / len(stdev_list)) ** 0.5
+    print(f'stdev: {stdev:0.3f}')
+    print(f'mean: {total_games/len(players):0.2f}')
+
+    for player in players:
+        num_stdev = (player.num_wins - (total_games / len(players))) / stdev
+        print(f'rank {rank:2d}: {player.name} {'-' * (10 - len(player.name)) } {player.num_wins} wins (# stdev from mean: {num_stdev:.3f}) ')
         rank += 1
     print('average number of turns: ' + str(sum(num_turns) / len(num_turns)))
